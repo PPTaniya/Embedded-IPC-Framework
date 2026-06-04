@@ -1,84 +1,121 @@
-# Embedded IPC Framework
+# 🚀 Embedded IPC Framework
 
-A modular and extensible C++ framework for Inter-Process Communication (IPC) in Linux-based embedded systems and ECU applications.
+![C++](https://img.shields.io/badge/C%2B%2B-20-blue)
+![Linux](https://img.shields.io/badge/Linux-POSIX-green)
+![Build](https://img.shields.io/badge/Build-CMake-orange)
+![IPC](https://img.shields.io/badge/IPC-Framework-red)
+![Status](https://img.shields.io/badge/Status-In%20Development-yellow)
 
-The framework abstracts multiple IPC mechanisms behind a common API and demonstrates modern C++ design, Linux system programming, synchronization, serialization, and event-driven architectures.
+A modular and extensible **C++ IPC Framework** for Linux-based Embedded Systems and Automotive ECUs.
 
----
+The framework abstracts multiple IPC mechanisms behind a common API and demonstrates:
 
-# Features
-
-## Supported
-
-* UNIX Domain Sockets (UDS)
-* Client / Server Communication
-* Serialization Framework
-* Modular Transport Abstraction
-* CMake Build System
-
-## Planned
-
-* Shared Memory Transport
-* POSIX Message Queues
-* Publish / Subscribe Messaging
-* epoll Event Loop
-* Thread Pool
-* Ring Buffer
-* Producer / Consumer Synchronization
-* Logging Framework
-* Unit Tests
+* 🚀 Modern C++20
+* 🐧 Linux System Programming
+* 🔄 Inter-Process Communication (IPC)
+* 🧵 Multithreading
+* 📡 Event-Driven Architecture
+* 🔒 Synchronization
+* 📦 Serialization
+* 🏗️ Framework Design
 
 ---
 
-# Architecture
+# 🎯 Objectives
+
+Build a reusable IPC framework supporting:
+
+✅ UNIX Domain Sockets
+
+✅ Shared Memory
+
+✅ POSIX Message Queues
+
+✅ Publish / Subscribe
+
+✅ Producer / Consumer
+
+✅ epoll Event Loop
+
+✅ Thread Pool
+
+✅ Serialization
+
+---
+
+# 🏛️ High Level Architecture
 
 ```text
-+--------------------------------------------------+
-|                  Applications                    |
-+--------------------------------------------------+
-| Sensor Service                                   |
-| Dashboard Client                                 |
-| Logger Service                                   |
-| ECU Gateway                                      |
-+--------------------------------------------------+
+┌───────────────────────────────────────────────────────┐
+│                   Applications                        │
+├───────────────────────────────────────────────────────┤
+│ sensor_service.cpp                                   │
+│ dashboard_client.cpp                                 │
+│ logger_service.cpp                                   │
+│ ecu_gateway.cpp                                      │
+└───────────────────────────────────────────────────────┘
+                        │
+                        ▼
+┌───────────────────────────────────────────────────────┐
+│                  IPC Framework                        │
+└───────────────────────────────────────────────────────┘
+                        │
+                        ▼
 
-                Uses IPC Framework
-
-+--------------------------------------------------+
-|                 IPC Framework                    |
-+--------------------------------------------------+
-| API Layer                                        |
-|--------------------------------------------------|
-| IPCClient                                        |
-| IPCServer                                        |
-| Publisher                                        |
-| Subscriber                                       |
-+--------------------------------------------------+
-| Transport Layer                                  |
-|--------------------------------------------------|
-| Unix Domain Socket Transport                     |
-| Shared Memory Transport                          |
-| POSIX Message Queue Transport                    |
-+--------------------------------------------------+
-| Core Infrastructure                              |
-|--------------------------------------------------|
-| Event Loop (epoll)                               |
-| Thread Pool                                      |
-| Ring Buffer                                      |
-| Logger                                           |
-| Serializer                                       |
-+--------------------------------------------------+
-
-+--------------------------------------------------+
-|                 Linux Kernel                     |
-+--------------------------------------------------+
-| epoll | socket | shm_open | mmap | mq_*          |
-+--------------------------------------------------+
+┌───────────────────────────────────────────────────────┐
+│ API Layer                                             │
+├───────────────────────────────────────────────────────┤
+│ ipc_client.hpp / ipc_client.cpp                       │
+│ ipc_server.hpp / ipc_server.cpp                       │
+│ publisher.hpp / publisher.cpp                         │
+│ subscriber.hpp / subscriber.cpp                       │
+└───────────────────────────────────────────────────────┘
+                        │
+                        ▼
+┌───────────────────────────────────────────────────────┐
+│ Transport Layer                                       │
+├───────────────────────────────────────────────────────┤
+│ itransport.hpp                                        │
+│ uds_transport.hpp / uds_transport.cpp                 │
+│ shm_transport.hpp / shm_transport.cpp                 │
+│ mq_transport.hpp / mq_transport.cpp                   │
+└───────────────────────────────────────────────────────┘
+                        │
+                        ▼
+┌───────────────────────────────────────────────────────┐
+│ Core Infrastructure                                   │
+├───────────────────────────────────────────────────────┤
+│ event_loop.hpp / event_loop.cpp                       │
+│ thread_pool.hpp / thread_pool.cpp                     │
+│ ring_buffer.hpp / ring_buffer.cpp                     │
+└───────────────────────────────────────────────────────┘
+                        │
+                        ▼
+┌───────────────────────────────────────────────────────┐
+│ Common Utilities                                      │
+├───────────────────────────────────────────────────────┤
+│ message.hpp                                           │
+│ serializer.hpp                                        │
+│ logger.hpp / logger.cpp                               │
+│ types.hpp                                             │
+└───────────────────────────────────────────────────────┘
+                        │
+                        ▼
+┌───────────────────────────────────────────────────────┐
+│ Linux Kernel APIs                                     │
+├───────────────────────────────────────────────────────┤
+│ socket()                                              │
+│ epoll_wait()                                          │
+│ shm_open()                                            │
+│ mmap()                                                │
+│ mq_send()                                             │
+│ mq_receive()                                          │
+└───────────────────────────────────────────────────────┘
 ```
 
 ---
 
-# Project Structure
+# 📂 Project Structure
 
 ```text
 embedded-ipc-framework/
@@ -89,16 +126,48 @@ embedded-ipc-framework/
 ├── include/
 │   └── ipc/
 │       ├── common/
+│       │   ├── message.hpp
+│       │   ├── serializer.hpp
+│       │   ├── logger.hpp
+│       │   └── types.hpp
+│       │
 │       ├── core/
+│       │   ├── event_loop.hpp
+│       │   ├── thread_pool.hpp
+│       │   └── ring_buffer.hpp
+│       │
 │       ├── transport/
+│       │   ├── itransport.hpp
+│       │   ├── uds_transport.hpp
+│       │   ├── shm_transport.hpp
+│       │   └── mq_transport.hpp
+│       │
 │       └── api/
+│           ├── ipc_client.hpp
+│           ├── ipc_server.hpp
+│           ├── publisher.hpp
+│           └── subscriber.hpp
 │
 ├── src/
 │   └── ipc/
 │       ├── common/
+│       │   └── logger.cpp
+│       │
 │       ├── core/
+│       │   ├── event_loop.cpp
+│       │   ├── thread_pool.cpp
+│       │   └── ring_buffer.cpp
+│       │
 │       ├── transport/
+│       │   ├── uds_transport.cpp
+│       │   ├── shm_transport.cpp
+│       │   └── mq_transport.cpp
+│       │
 │       └── api/
+│           ├── ipc_client.cpp
+│           ├── ipc_server.cpp
+│           ├── publisher.cpp
+│           └── subscriber.cpp
 │
 ├── apps/
 │   ├── models/
@@ -108,99 +177,47 @@ embedded-ipc-framework/
 │   └── ecu_gateway.cpp
 │
 ├── tests/
+│   ├── test_serializer.cpp
+│   ├── test_ringbuffer.cpp
+│   └── test_ipc.cpp
 │
 └── scripts/
+    ├── run_demo.sh
+    └── cleanup.sh
 ```
 
 ---
 
-# Framework Components
-
-## Common
-
-Reusable data structures and utilities.
-
-* Message
-* MessageHeader
-* Serializer
-* Logger
-* Common Types
-
-## Core
-
-Framework infrastructure.
-
-* Event Loop
-* Thread Pool
-* Ring Buffer
-
-## Transport
-
-IPC transport implementations.
-
-### UNIX Domain Socket Transport
-
-* Local IPC communication
-* Stream-based communication
-* Client / Server architecture
-
-### Shared Memory Transport
-
-* High throughput communication
-* Zero-copy data exchange
-* Ring buffer support
-
-### POSIX Message Queue Transport
-
-* Command messaging
-* Event notification
-* Priority support
-
-## API
-
-User-facing interfaces.
-
-* IPCClient
-* IPCServer
-* Publisher
-* Subscriber
-
----
-
-# Message Flow
+# 🔄 Message Flow
 
 ```text
-Sensor Service
-      |
-      |
-      V
+sensor_service
+      │
+      ▼
+IPCServer
+      │
+      ▼
+UDS Transport
+      │
+      ▼
 IPC Framework
-      |
-      |
-      V
-Dashboard Client
+      │
+      ▼
+IPCClient
+      │
+      ▼
+dashboard_client
 ```
 
 ---
 
-# Build Requirements
-
-## Compiler
-
-* GCC 11+
-* Clang 14+
-
-## Dependencies
-
-* Linux
-* CMake 3.16+
-* POSIX Threads
-
----
-
-# Build
+# 🛠️ Build
 
 ```bash
+git clone <repository-url>
+
+cd embedded-ipc-framework
+
 mkdir build
 cd build
 
@@ -210,87 +227,31 @@ make -j$(nproc)
 
 ---
 
-# Run
+# ▶️ Run Demo
 
-## Terminal 1
+### Terminal 1
 
 ```bash
 ./sensor_service
 ```
 
-## Terminal 2
+### Terminal 2
 
 ```bash
 ./dashboard_client
 ```
 
-Example Output:
+Expected Output:
 
 ```text
-Sensor ID : 1
-Temperature : 35.2
-Pressure : 1.1
+Sensor ID: 1
+Temperature: 35.2
+Pressure: 1.1
 ```
 
 ---
 
-# Design Principles
-
-## Separation of Concerns
-
-The IPC framework is completely independent of application-specific payloads.
-
-Application-specific structures such as:
-
-```cpp
-struct SensorData
-{
-    uint32_t sensorId;
-    float temperature;
-    float pressure;
-};
-```
-
-remain outside the framework.
-
-The framework only transports generic messages.
-
----
-
-## Transport Abstraction
-
-All IPC mechanisms implement a common interface.
-
-```cpp
-class ITransport
-{
-public:
-    virtual bool send(const Message&) = 0;
-    virtual bool receive(Message&) = 0;
-    virtual int getFd() const = 0;
-
-    virtual ~ITransport() = default;
-};
-```
-
-This allows transports to be swapped without changing application code.
-
----
-
-## Extensibility
-
-New transports can be added by implementing the transport interface.
-
-Examples:
-
-* TCP Transport
-* CAN Transport
-* SOME/IP Transport
-* DDS Transport
-
----
-
-# Current Development Status
+# 📋 Development Roadmap
 
 ## Phase 1
 
@@ -322,14 +283,12 @@ Examples:
 ## Phase 5
 
 * [ ] Thread Pool
-* [ ] Unit Tests
-* [ ] Performance Benchmarking
+* [ ] Unit Testing
+* [ ] Benchmarking
 
 ---
 
-# Testing
-
-Unit tests are located under:
+# 🧪 Testing
 
 ```text
 tests/
@@ -340,57 +299,45 @@ tests/
 
 ---
 
-# Demo Applications
+# 💡 Linux Concepts Demonstrated
 
-## Sensor Service
-
-Produces simulated sensor data.
-
-## Dashboard Client
-
-Consumes and displays sensor data.
-
-## Logger Service
-
-Receives and stores messages.
-
-## ECU Gateway
-
-Acts as a routing and dispatching component between services.
+* 🐧 Linux System Programming
+* 🔌 UNIX Domain Sockets
+* 🧠 Shared Memory
+* 📨 POSIX Message Queues
+* ⚡ epoll
+* 🔒 Synchronization
+* 🧵 Multithreading
+* 📦 Serialization
+* 🔄 Producer / Consumer
+* 🎯 Event-Driven Design
+* 🏗️ Framework Design
+* ♻️ RAII
+* 🎨 Polymorphism
 
 ---
 
-# Linux Concepts Demonstrated
-
-* UNIX Domain Sockets
-* POSIX Shared Memory
-* POSIX Message Queues
-* epoll
-* Producer / Consumer Pattern
-* Synchronization
-* Serialization
-* Event-Driven Design
-* Multithreading
-* Modern C++
-* RAII
-* Polymorphism
-* Design Patterns
-
----
-
-# Future Enhancements
+# 🔮 Future Enhancements
 
 * Lock-Free Ring Buffer
-* Asynchronous Logging
+* Asynchronous Logger
 * Heartbeat Monitoring
-* Automatic Reconnection
+* Auto-Reconnect
 * Topic-Based Routing
-* Configuration Files
-* Benchmark Suite
+* Configuration Support
+* Performance Benchmark Suite
 * GoogleTest Integration
 
 ---
 
-# License
+# 👨‍💻 Author
+
+**Papechen P**
+
+Embedded Software Engineer | Linux | Automotive ECU Development | C++
+
+---
+
+# 📄 License
 
 MIT License
