@@ -1,7 +1,8 @@
 #pragma once
 
+#include "ipc/common/types.hpp"
+
 #include <cstring>
-#include <vector>
 #include <type_traits>
 #include <stdexcept>
 
@@ -13,13 +14,13 @@ class Serializer
 public:
 
     template<typename T>
-    static std::vector<uint8_t> serialize(const T& obj)
+    static ByteBuffer serialize(const T& obj)
     {
         static_assert(
             std::is_trivially_copyable_v<T>,
             "Serializer only supports trivially copyable types");
 
-        std::vector<uint8_t> buffer(sizeof(T));
+        ByteBuffer buffer(sizeof(T));
 
         std::memcpy(
             buffer.data(),
@@ -30,7 +31,8 @@ public:
     }
 
     template<typename T>
-    static T deserialize(const std::vector<uint8_t>& buffer)
+    static T deserialize(
+        const ByteBuffer& buffer)
     {
         static_assert(
             std::is_trivially_copyable_v<T>,
