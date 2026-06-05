@@ -1,18 +1,11 @@
 #pragma once
 
+#include "ipc/common/types.hpp"
+
 #include <cstdint>
-#include <vector>
 
 namespace ipc
 {
-
-enum class MessageType : uint32_t
-{
-    SENSOR_DATA = 1,
-    LOG_DATA,
-    HEARTBEAT,
-    COMMAND
-};
 
 struct MessageHeader
 {
@@ -24,7 +17,7 @@ struct MessageHeader
 struct Message
 {
     MessageHeader header;
-    std::vector<uint8_t> payload;
+    ByteBuffer payload;
 };
 
 }
