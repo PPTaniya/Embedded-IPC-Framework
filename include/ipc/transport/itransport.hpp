@@ -9,13 +9,15 @@ class ITransport
 {
 public:
 
-    virtual bool send(const Message& msg) = 0;
+    virtual ~ITransport() = default;
 
-    virtual bool receive(Message& msg) = 0;
+    virtual bool send(
+        const Message& msg) = 0;
+
+    virtual bool receive(
+        Message& msg) = 0;
 
     virtual int getFd() const = 0;
-
-    virtual ~ITransport() = default;
 };
 
-}
+} // namespace ipc
